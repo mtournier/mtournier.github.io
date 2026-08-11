@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Matías Tournier — Portfolio</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%230A0A0A'/%3E%3Ctext x='50' y='54' font-family='Arial,Helvetica,sans-serif' font-weight='bold' font-size='58' fill='%23F5F5F5' text-anchor='middle' dominant-baseline='central'%3EMT%3C/text%3E%3C/svg%3E" />
+<meta name="description" content="Portfolio de Matías Tournier. Estudiante de Analista TI en transición hacia el desarrollo de software. Proyectos en C#/.NET, JavaScript, Ionic y más." />
+
+<!-- Bootstrap 5 -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet" />
+<!-- Fuentes -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+
+<style>
+  :root{
+    --bg:#0A0A0A;
+    --surface:#141414;
+    --line:#262626;
+    --text:#F5F5F5;
+    --muted:#8A8A8A;
+    --red:#E10600;
+    --red-dark:#B30500;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  @media (prefers-reduced-motion: reduce){ html{ scroll-behavior:auto; } *{ animation:none!important; transition:none!important; } }
+
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',system-ui,sans-serif;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  ::selection{ background:var(--red); color:#fff; }
+
+  .display{ font-family:'Anton',sans-serif; font-weight:400; letter-spacing:.01em; line-height:.92; text-transform:uppercase; text-rendering:optimizeLegibility; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+  .mono{ font-family:'JetBrains Mono',monospace; }
+  .text-red{ color:var(--red)!important; }
+  a{ color:inherit; }
+
+  /* focus visibility */
+  a:focus-visible, button:focus-visible{ outline:3px solid var(--red); outline-offset:3px; }
+
+  /* ---------- NAV ---------- */
+  .nav-bar{
+    position:fixed; top:0; left:0; right:0; z-index:1000;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 5vw;
+    background:rgba(10,10,10,0);
+    transition:background .3s ease, border-color .3s ease;
+    border-bottom:1px solid transparent;
+  }
+  .nav-bar.scrolled{ background:rgba(10,10,10,.9); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); }
+  .nav-logo{ font-family:'Anton',sans-serif; font-size:1.25rem; text-transform:uppercase; letter-spacing:.02em; text-decoration:none; }
+  .nav-logo span{ color:var(--red); }
+  .nav-links{ display:flex; gap:28px; align-items:center; }
+  .nav-links a{ font-family:'JetBrains Mono',monospace; font-size:.8rem; text-decoration:none; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; transition:color .2s; }
+  .nav-links a:hover{ color:var(--text); }
+  .nav-toggle{ display:none; background:none; border:0; color:var(--text); font-size:1.6rem; cursor:pointer; }
+  @media (max-width:860px){
+    .nav-links{ position:fixed; inset:0 0 0 auto; width:min(80vw,320px); flex-direction:column; justify-content:center; gap:34px; background:var(--surface); border-left:2px solid var(--red); transform:translateX(100%); transition:transform .35s cubic-bezier(.7,0,.2,1); }
+    .nav-links.open{ transform:translateX(0); }
+    .nav-links a{ font-size:1rem; }
+    .nav-toggle{ display:block; z-index:1001; }
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{ min-height:100vh; display:flex; flex-direction:column; justify-content:center; padding:120px 5vw 60px; position:relative; }
+  .hero .eyebrow{ margin-bottom:8px; font-family:'JetBrains Mono',monospace; color:var(--muted); font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; display:flex; align-items:center; gap:9px; flex-wrap:nowrap; white-space:nowrap; }
+  .hero .eyebrow::before{ width:22px; }
+  .hero .eyebrow::before{ content:""; width:40px; height:2px; background:var(--red); display:inline-block; }
+  .hero h1{ font-size:clamp(3.4rem,15vw,12rem); margin:0; padding-top:.05em; }
+  .hero h1 .line2{ color:var(--red); }
+  .hero .role{ font-family:'JetBrains Mono',monospace; font-size:clamp(.85rem,2.4vw,1.15rem); color:var(--text); margin-top:26px; letter-spacing:.04em; }
+  .hero .role b{ color:var(--red); font-weight:700; }
+  .hero .cta-row{ margin-top:40px; display:flex; flex-wrap:wrap; gap:16px; }
+
+  .btn-red{ background:var(--red); color:#fff; border:2px solid var(--red); font-family:'JetBrains Mono',monospace; text-transform:uppercase; letter-spacing:.08em; font-size:.8rem; font-weight:700; padding:14px 26px; text-decoration:none; display:inline-block; transition:background .2s,color .2s; }
+  .btn-red:hover{ background:transparent; color:var(--red); }
+  .btn-ghost{ background:transparent; color:var(--text); border:2px solid var(--line); font-family:'JetBrains Mono',monospace; text-transform:uppercase; letter-spacing:.08em; font-size:.8rem; font-weight:700; padding:14px 26px; text-decoration:none; display:inline-block; transition:border-color .2s,color .2s; }
+  .btn-ghost:hover{ border-color:var(--red); color:var(--red); }
+
+  /* ---------- MARQUEE (signature) ---------- */
+  .marquee{ border-top:2px solid var(--red); border-bottom:2px solid var(--red); background:var(--red); overflow:hidden; padding:14px 0; }
+  .marquee__track{ display:flex; gap:0; width:max-content; animation:scroll 26s linear infinite; }
+  .marquee:hover .marquee__track{ animation-play-state:paused; }
+  .marquee__track span{ font-family:'Anton',sans-serif; text-transform:uppercase; font-size:1.5rem; color:#0A0A0A; padding:0 26px; white-space:nowrap; letter-spacing:.02em; }
+  .marquee__track span::after{ content:"●"; color:#fff; margin-left:26px; font-size:.8rem; vertical-align:middle; }
+  @keyframes scroll{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+
+  /* ---------- SECTIONS ---------- */
+  section{ padding:110px 5vw; }
+  .sec-head{ display:flex; align-items:baseline; gap:18px; margin-bottom:56px; flex-wrap:wrap; }
+  .sec-num{ font-family:'JetBrains Mono',monospace; color:var(--red); font-size:.9rem; font-weight:700; }
+  .sec-title{ font-size:clamp(2rem,6vw,4rem); margin:0; }
+
+  .about-grid{ display:grid; grid-template-columns:1.3fr .7fr; gap:56px; }
+  @media (max-width:860px){ .about-grid{ grid-template-columns:1fr; gap:36px; } }
+  .about-lead{ font-size:clamp(1.15rem,2.6vw,1.6rem); line-height:1.5; font-weight:500; }
+  .about-lead b{ color:var(--red); }
+  .about-body{ color:var(--muted); line-height:1.7; margin-top:22px; }
+  .fact{ border-top:1px solid var(--line); padding:16px 0; display:flex; justify-content:space-between; gap:16px; font-family:'JetBrains Mono',monospace; font-size:.85rem; }
+  .fact span:first-child{ color:var(--muted); text-transform:uppercase; letter-spacing:.05em; }
+
+  /* ---------- SKILLS ---------- */
+  .skills-wrap{ display:flex; flex-wrap:wrap; gap:14px; justify-content:center; }
+  .chip{ font-family:'JetBrains Mono',monospace; font-size:1.05rem; border:1px solid var(--line); padding:16px 26px; color:var(--text); transition:border-color .2s,color .2s,background .2s; cursor:default; }
+  .chip:hover{ border-color:var(--red); color:var(--red); }
+  .chip.key{ border-color:var(--red); background:rgba(225,6,0,.08); }
+
+  /* ---------- PROJECTS ---------- */
+  .project{ border-top:1px solid var(--line); padding:34px 0; display:grid; grid-template-columns:80px 1fr auto; gap:28px; align-items:start; transition:background .25s; position:relative; }
+  .project:last-child{ border-bottom:1px solid var(--line); }
+  .project:hover{ background:linear-gradient(90deg, rgba(225,6,0,.06), transparent 60%); }
+  .project__num{ font-family:'Anton',sans-serif; font-size:2.4rem; color:var(--line); transition:color .25s; }
+  .project:hover .project__num{ color:var(--red); }
+  .project__title{ font-family:'Anton',sans-serif; text-transform:uppercase; font-size:clamp(1.4rem,3.5vw,2.2rem); line-height:1; margin:0 0 6px; }
+  .project__meta{ font-family:'JetBrains Mono',monospace; font-size:.75rem; color:var(--muted); letter-spacing:.05em; margin-bottom:14px; }
+  .project__desc{ color:var(--muted); line-height:1.6; max-width:60ch; }
+  .project__tags{ margin-top:14px; display:flex; flex-wrap:wrap; gap:8px; }
+  .tag{ font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--text); border:1px solid var(--line); padding:4px 10px; }
+  .project__cta{ display:flex; flex-direction:column; gap:10px; align-items:stretch; min-width:160px; }
+  .plink{ font-family:'JetBrains Mono',monospace; font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; text-decoration:none; text-align:center; padding:12px 14px; border:2px solid var(--line); transition:all .2s; }
+  .plink.primary{ background:var(--red); border-color:var(--red); color:#fff; }
+  .plink.primary:hover{ background:transparent; color:var(--red); }
+  .plink.ghost:hover{ border-color:var(--red); color:var(--red); }
+  @media (max-width:760px){
+    .project{ grid-template-columns:1fr; gap:14px; }
+    .project__num{ font-size:1.8rem; }
+    .project__cta{ flex-direction:row; min-width:0; }
+    .plink{ flex:1; }
+  }
+
+  /* ---------- CERTS ---------- */
+  .cert-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:0; border-left:1px solid var(--line); border-top:1px solid var(--line); }
+  .cert{ border-right:1px solid var(--line); border-bottom:1px solid var(--line); padding:26px; transition:background .2s; display:block; text-decoration:none; color:inherit; position:relative; }
+  .cert:hover{ background:var(--surface); }
+  .cert__year{ font-family:'JetBrains Mono',monospace; color:var(--red); font-size:.8rem; font-weight:700; }
+  .cert__name{ font-weight:700; margin:8px 0 4px; }
+  .cert__org{ color:var(--muted); font-size:.85rem; }
+  .cert__link{ display:block; margin-top:14px; font-family:'JetBrains Mono',monospace; font-size:.72rem; letter-spacing:.05em; text-transform:uppercase; color:var(--red); opacity:0; transform:translateY(4px); transition:opacity .2s, transform .2s; }
+  .cert:hover .cert__link, .cert:focus-visible .cert__link{ opacity:1; transform:none; }
+
+  /* ---------- CONTACT ---------- */
+  .contact{ text-align:center; }
+  .contact h2{ font-size:clamp(2.6rem,10vw,7rem); margin:0 0 10px; }
+  .contact .sub{ color:var(--muted); font-family:'JetBrains Mono',monospace; letter-spacing:.05em; margin-bottom:40px; }
+  .contact-links{ display:flex; flex-wrap:wrap; justify-content:center; gap:14px; }
+
+  footer{ border-top:1px solid var(--line); padding:30px 5vw; display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; font-family:'JetBrains Mono',monospace; font-size:.75rem; color:var(--muted); }
+
+  /* reveal on scroll */
+  .reveal{ opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.in{ opacity:1; transform:none; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav-bar" id="nav">
+  <a href="#top" class="nav-logo">MT<span>.</span></a>
+  <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false">≡</button>
+  <div class="nav-links" id="navLinks">
+    <a href="#about">Sobre mí</a>
+    <a href="#skills">Stack</a>
+    <a href="#projects">Proyectos</a>
+    <a href="#certs">Certificaciones</a>
+    <a href="#contact">Contacto</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="top">
+  <div class="eyebrow">Estudiante de Analista TI @ ORT</div>
+  <h1 class="display">Matías<br><span class="line2">Tournier</span></h1>
+  <p class="role">Desarrollo de software · <b>C#/.NET</b> · <b>JavaScript</b></p>
+  <div class="cta-row">
+    <a href="#projects" class="btn-red">Proyectos</a>
+    <a href="cv.pdf" target="_blank" rel="noopener" class="btn-ghost">Currículum</a>
+    <a href="#contact" class="btn-ghost">Contacto</a>
+  </div>
+</header>
+
+<!-- MARQUEE / signature -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track">
+    <span>C#</span><span>.NET</span><span>JavaScript</span><span>Ionic</span><span>Bootstrap</span><span>SQL</span><span>APIs REST</span><span>GeneXus</span><span>Git</span><span>Scrum</span>
+    <span>C#</span><span>.NET</span><span>JavaScript</span><span>Ionic</span><span>Bootstrap</span><span>SQL</span><span>APIs REST</span><span>GeneXus</span><span>Git</span><span>Scrum</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="sec-head reveal"><span class="sec-num">01</span><h2 class="sec-title display">Sobre mí</h2></div>
+  <div class="about-grid">
+    <div class="reveal">
+      <p class="about-lead">Con más de <b>4 años en soporte técnico</b>, estoy dando el giro hacia el <b>desarrollo de software</b>, aplicando lo que aprendo en la carrera de Analista TI en la Universidad ORT.</p>
+      <p class="about-body">Trabajo con C#/.NET, JavaScript, HTML, CSS y SQL, además de consumo de APIs REST y control de versiones con Git. Me destaco por el pensamiento lógico y resolutivo, el trabajo colaborativo bajo metodologías ágiles y una mentalidad orientada a la mejora continua.</p>
+    </div>
+    <div class="reveal">
+      <div class="fact"><span>Rol</span><span>Soporte TI → Dev</span></div>
+      <div class="fact"><span>Formación</span><span>Analista TI · ORT</span></div>
+      <div class="fact"><span>Ubicación</span><span>Montevideo, UY</span></div>
+      <div class="fact"><span>Idiomas</span><span>ES nativo · EN B1</span></div>
+      <div class="fact"><span>Estado</span><span class="text-red">En búsqueda</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="sec-head reveal"><span class="sec-num">02</span><h2 class="sec-title display">Stack técnico</h2></div>
+  <div class="skills-wrap reveal">
+    <span class="chip key">C#</span><span class="chip key">.NET</span><span class="chip key">JavaScript</span>
+    <span class="chip">HTML</span><span class="chip">CSS</span><span class="chip">Bootstrap</span><span class="chip">Ionic</span>
+    <span class="chip key">SQL</span><span class="chip">AWS</span><span class="chip">Azure</span>
+    <span class="chip">APIs REST</span><span class="chip">JSON</span><span class="chip">JWT</span>
+    <span class="chip">Git</span><span class="chip">GitHub</span><span class="chip">Scrum</span><span class="chip key">GeneXus</span>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="sec-head reveal"><span class="sec-num">03</span><h2 class="sec-title display">Proyectos</h2></div>
+
+  <div class="project reveal">
+    <div class="project__num">01</div>
+    <div>
+      <h3 class="project__title">Gestión de Incidentes de Ciberseguridad</h3>
+      <div class="project__meta">2026 · En equipo · Universidad ORT</div>
+      <p class="project__desc">Aplicación web para el seguimiento de incidentes (phishing y ransomware), con gestión de personas, cuentas y activos y cálculo de severidad. Arquitectura con capa de dominio y POO (herencia, polimorfismo, interfaces), modelada con UML.</p>
+      <div class="project__tags"><span class="tag">C#</span><span class="tag">.NET</span><span class="tag">ASP.NET MVC</span><span class="tag">POO</span><span class="tag">UML</span></div>
+    </div>
+    <div class="project__cta">
+      <a href="https://github.com/mtournier/sistema-incidentes-ciberseguridad" target="_blank" rel="noopener" class="plink primary">Código</a>
+    </div>
+  </div>
+
+  <div class="project reveal">
+    <div class="project__num">02</div>
+    <div>
+      <h3 class="project__title">Seguimiento de Jugadores del Mundial</h3>
+      <div class="project__meta">2026 · Individual · Universidad ORT</div>
+      <p class="project__desc">App móvil Android en Ionic + JavaScript que consume una API REST con autenticación por token (sesión en localStorage). Integra un endpoint de análisis de sentimiento (GenAI) que valida comentarios antes de registrar cada jugador, con filtrado, estadísticas y un mapa por país.</p>
+      <div class="project__tags"><span class="tag">Ionic</span><span class="tag">JavaScript</span><span class="tag">API REST</span><span class="tag">JWT</span><span class="tag">GenAI</span></div>
+    </div>
+    <div class="project__cta">
+      <a href="https://mtournier.github.io/worldcupfan/www/" target="_blank" rel="noopener" class="plink primary">Ver demo</a>
+      <a href="https://github.com/mtournier/worldcupfan/raw/main/app-debug.apk" target="_blank" rel="noopener" class="plink ghost">Descargar APK</a>
+      <a href="https://github.com/mtournier/worldcupfan" target="_blank" rel="noopener" class="plink ghost">Código</a>
+    </div>
+  </div>
+
+  <div class="project reveal">
+    <div class="project__num">03</div>
+    <div>
+      <h3 class="project__title">Censo Ciudadano</h3>
+      <div class="project__meta">2023 · En equipo · Universidad ORT</div>
+      <p class="project__desc">Aplicación web para gestionar un censo de ciudadanos, con perfiles de censista e invitado. Registro con validaciones (incluida la verificación del dígito de la cédula), reasignación de casos y reportes estadísticos por departamento. JavaScript con POO y manipulación del DOM.</p>
+      <div class="project__tags"><span class="tag">JavaScript</span><span class="tag">POO</span><span class="tag">HTML</span><span class="tag">CSS</span></div>
+    </div>
+    <div class="project__cta">
+      <a href="https://mtournier.github.io/sistema-censo/" target="_blank" rel="noopener" class="plink primary">Ver proyecto</a>
+      <a href="https://github.com/mtournier/sistema-censo" target="_blank" rel="noopener" class="plink ghost">Código</a>
+    </div>
+  </div>
+
+  <div class="project reveal">
+    <div class="project__num">04</div>
+    <div>
+      <h3 class="project__title">Paseadores de Perros</h3>
+      <div class="project__meta">2025 · En equipo · Universidad ORT</div>
+      <p class="project__desc">Aplicación web que conecta paseadores con dueños de perros. Dos perfiles de usuario, registro con validaciones, flujo de contrataciones con estados y asignación automática de cupos según el tamaño del perro. JavaScript con POO.</p>
+      <div class="project__tags"><span class="tag">JavaScript</span><span class="tag">POO</span><span class="tag">HTML</span><span class="tag">CSS</span></div>
+    </div>
+    <div class="project__cta">
+      <a href="https://mtournier.github.io/paseadores-de-perros/" target="_blank" rel="noopener" class="plink primary">Ver proyecto</a>
+      <a href="https://github.com/mtournier/paseadores-de-perros" target="_blank" rel="noopener" class="plink ghost">Código</a>
+    </div>
+  </div>
+
+  <div class="project reveal">
+    <div class="project__num">05</div>
+    <div>
+      <h3 class="project__title">Agencia de Viajes</h3>
+      <div class="project__meta">2024 · Individual · Universidad ORT</div>
+      <p class="project__desc">Sitio web de una página desarrollado a partir de un wireframe, con HTML semántico, navegación por anclas, formulario con validación y estilos en CSS puro (sin frameworks). Enfocado en maquetado y jerarquía visual.</p>
+      <div class="project__tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">Responsive</span><span class="tag">Diseño web</span></div>
+    </div>
+    <div class="project__cta">
+      <a href="https://mtournier.github.io/agencia-viajes/" target="_blank" rel="noopener" class="plink primary">Ver proyecto</a>
+      <a href="https://github.com/mtournier/agencia-viajes" target="_blank" rel="noopener" class="plink ghost">Código</a>
+    </div>
+  </div>
+</section>
+
+<!-- CERTS -->
+<section id="certs">
+  <div class="sec-head reveal"><span class="sec-num">04</span><h2 class="sec-title display">Certificaciones</h2></div>
+  <div class="cert-grid reveal">
+    <a class="cert" href="https://drive.google.com/file/d/1OP09TwfPpSVjuf7iPTvcR-jl6a91XRLb/view" target="_blank" rel="noopener"><div class="cert__year">2024</div><div class="cert__name">Desarrollador Jr. GeneXus 18</div><div class="cert__org">GeneXus</div><span class="cert__link">Ver certificado →</span></a>
+    <a class="cert" href="https://drive.google.com/file/d/15-rLpgI6dHBZ2V-VaxT6OXs_aeXmZ5dO/view" target="_blank" rel="noopener"><div class="cert__year">2024</div><div class="cert__name">Bootstrap</div><div class="cert__org">Board Infinity</div><span class="cert__link">Ver certificado →</span></a>
+    <a class="cert" href="https://drive.google.com/file/d/1ACMGHPIaKcfXGz2l3HpPKFZRFOwjbWZB/view" target="_blank" rel="noopener"><div class="cert__year">2024</div><div class="cert__name">IA para todos</div><div class="cert__org">DeepLearning.AI</div><span class="cert__link">Ver certificado →</span></a>
+    <a class="cert" href="https://drive.google.com/file/d/1G4_YmstKlppkXo7FGJj0x49fECAYRJaW/view" target="_blank" rel="noopener"><div class="cert__year">2023</div><div class="cert__name">Jóvenes a Programar</div><div class="cert__org">Ceibal</div><span class="cert__link">Ver certificado →</span></a>
+    <a class="cert" href="https://drive.google.com/file/d/1vlPsev-AtcYAqapOidP6eDFK9wrYuHVA/view" target="_blank" rel="noopener"><div class="cert__year">2022</div><div class="cert__name">Programación en Python</div><div class="cert__org">Universidad de la Empresa</div><span class="cert__link">Ver certificado →</span></a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact">
+  <div class="reveal">
+    <h2 class="display">Contacto<span class="text-red">.</span></h2>
+    <p class="sub">Abierto a oportunidades como desarrollador junior</p>
+    <div class="contact-links">
+      <a href="mailto:thetournier@gmail.com" class="btn-red">Email</a>
+      <a href="cv.pdf" target="_blank" rel="noopener" class="btn-ghost">Currículum</a>
+      <a href="https://www.linkedin.com/in/matias-tournier/" target="_blank" rel="noopener" class="btn-ghost">LinkedIn</a>
+      <a href="https://github.com/mtournier" target="_blank" rel="noopener" class="btn-ghost">GitHub</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 Matías Tournier</span>
+  <span>Hecho con HTML · CSS · JS · Bootstrap</span>
+</footer>
+
+<!-- Bootstrap JS (bundle) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Nav scroll state
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // Mobile menu
+  const toggle = document.getElementById('navToggle');
+  const links = document.getElementById('navLinks');
+  toggle.addEventListener('click', () => {
+    const open = links.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', open);
+    toggle.textContent = open ? '×' : '≡';
+  });
+  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    links.classList.remove('open'); toggle.textContent = '≡'; toggle.setAttribute('aria-expanded', false);
+  }));
+
+  // Scroll reveal
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold:.15 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Placeholder links: recordatorio para completar
+  document.querySelectorAll('[data-link]').forEach(a => {
+    a.addEventListener('click', (ev) => {
+      if (a.getAttribute('href') === '#') {
+        ev.preventDefault();
+        alert('Reemplazá este enlace por el link real (GitHub, demo o tu portfolio en somee) editando el atributo href en el HTML.');
+      }
+    });
+  });
+</script>
+</body>
+</html>
